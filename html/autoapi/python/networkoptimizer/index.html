@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>python.networkoptimizer &mdash; Structural fish eye approximation 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Structural fish eye approximation
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Structural fish eye approximation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">python.networkoptimizer</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/autoapi/python/networkoptimizer/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-python.networkoptimizer">
+<span id="python-networkoptimizer"></span><h1><a class="reference internal" href="#module-python.networkoptimizer" title="python.networkoptimizer"><code class="xref py py-mod docutils literal notranslate"><span class="pre">python.networkoptimizer</span></code></a><a class="headerlink" href="#module-python.networkoptimizer" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#python.networkoptimizer.NetworkOptimizer" title="python.networkoptimizer.NetworkOptimizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NetworkOptimizer</span></code></a>()</p></td>
+<td><p>Optimizes network positions using custom gradient descent</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py class">
+<dt id="python.networkoptimizer.NetworkOptimizer">
+<em class="property">class </em><code class="sig-prename descclassname">python.networkoptimizer.</code><code class="sig-name descname">NetworkOptimizer</code><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimizes network positions using custom gradient descent</p>
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.initOptimization">
+<code class="sig-name descname">initOptimization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">network</span></em>, <em class="sig-param"><span class="n">focalPoint</span></em>, <em class="sig-param"><span class="n">radius</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.initOptimization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.initOptimization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes optimization variables and initial gradient states, initial node positions and initial edge connections
+like: Gradient momentum, Terms to be minimized at node level, Edge connection Positions of original layout,
+Edge connection Positions before and after performing an optimization step, Edge connection Positions of the fisheye target layout</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>network</strong> – {“nodes”=[],”edges”=[]} Network to be optimized/approximated</p></li>
+<li><p><strong>focalPoint</strong> – [int,int] focal point of target fisheye distortion</p></li>
+<li><p><strong>radius</strong> – (int) radius of fisheye distortion boundary</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calculateEdgeCrossLoss">
+<code class="sig-name descname">calculateEdgeCrossLoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">stepLConnVec</span></em>, <em class="sig-param"><span class="n">stepRConnVec</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calculateEdgeCrossLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calculateEdgeCrossLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects edge crossings in focal area and increases node loss where there is a low angle between crossings.
+(edge1 counter-clockwise rotation, edge2 clockwise rotation)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stepLConnVec</strong> – np.array((nodes,2)) Left hand side edgeconnection positions of step</p></li>
+<li><p><strong>stepRConnVec</strong> – np.array((nodes,2)) Right hand side edgeconnection positions of step</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>edge losses at each crossing, indices to find edges in global context</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calculateOverlapLoss">
+<code class="sig-name descname">calculateOverlapLoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">stepLConnVec</span></em>, <em class="sig-param"><span class="n">stepRConnVec</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calculateOverlapLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calculateOverlapLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects overlapping nodes in focal area and increases node loss if nodes are too close.
+Inserts virtual edge with minimum length to nudge nodes apart</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stepLConnVec</strong> – np.array((nodes,2)) Left hand side edgeconnection positions of step</p></li>
+<li><p><strong>stepRConnVec</strong> – np.array((nodes,2)) Right hand side edgeconnection positions of step</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>edge losses at each node overlapping edge, indices to find edges in global context</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calculateStructuralLoss">
+<code class="sig-name descname">calculateStructuralLoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">stepLConnVec</span></em>, <em class="sig-param"><span class="n">stepRConnVec</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calculateStructuralLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calculateStructuralLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Incentivised the overall structure of the layout, by incentivising the edge orientations to follow the
+original layouts orientations, while letting the edge lengths follow the lengths of the
+fisheye distortet layout</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stepLConnVec</strong> – np.array((nodes,2)) Left hand side edgeconnection positions of step</p></li>
+<li><p><strong>stepRConnVec</strong> – np.array((nodes,2)) Right hand side edgeconnection positions of step</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>structural edge losses at each edge, indices to find edges in global context</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calculateNodeLoss">
+<code class="sig-name descname">calculateNodeLoss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">stepLConnVec</span></em>, <em class="sig-param"><span class="n">stepRConnVec</span></em>, <em class="sig-param"><span class="n">rConnVecOriginal</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calculateNodeLoss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calculateNodeLoss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates loss (or minimization term) for each edge and then summs the edges losses for the nodes
+to calculate the x, y loss at each node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stepLConnVec</strong> – np.array((nodes,2)) Left hand side edgeconnection positions of step</p></li>
+<li><p><strong>stepRConnVec</strong> – np.array((nodes,2)) Right hand side edgeconnection positions of step</p></li>
+<li><p><strong>rConnVecOriginal</strong> – np.array((nodes,2)) Right hand side edgeconnection positions of the original layout</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x,y loss at each node for step</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.step">
+<code class="sig-name descname">step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a gradient descent step:</p>
+<ol class="arabic simple">
+<li><p>Move last node positions by gradient * velocity value</p></li>
+<li><p>Calculate node loss at the new positions</p></li>
+<li><p>Update Velocity and gradient direction based on if loss increased or decreased</p></li>
+<li><p>Set last positions to updated positions</p></li>
+<li><p>Repeat until optimized</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calcOrientations">
+<code class="sig-name descname">calcOrientations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">startPositions</span></em>, <em class="sig-param"><span class="n">endPositions</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calcOrientations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calcOrientations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the nomalized orientations between 2 Position Vectors</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calcLenghts">
+<code class="sig-name descname">calcLenghts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">startPositions</span></em>, <em class="sig-param"><span class="n">endPositions</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calcLenghts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calcLenghts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate vector lengths between 2 position vectors</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calcVectorLenghts">
+<code class="sig-name descname">calcVectorLenghts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">vector</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calcVectorLenghts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calcVectorLenghts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate vector lengths of a single position vector</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.getEdgeConnPositions">
+<code class="sig-name descname">getEdgeConnPositions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">nodeVec</span></em>, <em class="sig-param"><span class="n">edgeConns</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.getEdgeConnPositions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.getEdgeConnPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a matrix where each index of a connection table was replaced by the corresponding position of the nodes table
+:param nodeVec: the vector of node positions to get the position values from
+:param edgeConns: rows of connected edge indices</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.calcFisheyePositions">
+<code class="sig-name descname">calcFisheyePositions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">nodes</span></em>, <em class="sig-param"><span class="n">focalPoint</span></em>, <em class="sig-param"><span class="n">radius</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.calcFisheyePositions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.calcFisheyePositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the new node positions distorted by a fishey lens
+:param nodes: original positions of the nodes
+:param focalPoint: [x,y] focal Point of the fisheye lens (center)
+:param radius: radius of the fisheye lens/distortion</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="python.networkoptimizer.NetworkOptimizer.extractFocalEdges">
+<code class="sig-name descname">extractFocalEdges</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">lConnPositions</span></em>, <em class="sig-param"><span class="n">rConnPositions</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/python/networkoptimizer.html#NetworkOptimizer.extractFocalEdges"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#python.networkoptimizer.NetworkOptimizer.extractFocalEdges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the nodes and edges inside the focal area of the fisheye lens</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lConnPositions</strong> – np.array((nodes,2)) Left hand side edgeconnection positions of step</p></li>
+<li><p><strong>rConnPositions</strong> – np.array((nodes,2)) Right hand side edgeconnection positions of step</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Markus Peitl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

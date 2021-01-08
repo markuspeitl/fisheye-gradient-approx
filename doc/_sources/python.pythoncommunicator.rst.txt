@@ -1,0 +1,7 @@
+python.pythoncommunicator module
+================================
+
+.. automodule:: python.pythoncommunicator
+   :members:
+   :undoc-members:
+   :show-inheritance:

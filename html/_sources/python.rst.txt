@@ -1,0 +1,46 @@
+python package
+==============
+
+Submodules
+----------
+
+python.networkgenerator module
+------------------------------
+
+.. automodule:: python.networkgenerator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python.networkoptimizer module
+------------------------------
+
+.. automodule:: python.networkoptimizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python.pythoncommunicator module
+--------------------------------
+
+.. automodule:: python.pythoncommunicator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+python.pythonmessenger module
+-----------------------------
+
+.. automodule:: python.pythonmessenger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: python
+   :members:
+   :undoc-members:
+   :show-inheritance:

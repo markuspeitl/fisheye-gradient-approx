@@ -1,0 +1,54 @@
+:mod:`python.pythoncommunicator`
+================================
+
+.. py:module:: python.pythoncommunicator
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   python.pythoncommunicator.PythonCommunicator
+
+
+
+.. py:class:: PythonCommunicator
+
+   Handling events sent to this process by writing to its stdin and sending data updates to stdout
+
+   .. method:: sendBackNetwork(self, updateType, positionsonly=False)
+
+
+      Serialize network and send to stdout
+
+      :param updateType: (str) prefix to send data with, spaces not allowed in this name
+      :param positionsonly: (bool) only send back network node positions (omit edges and clusterids data)
+
+
+   .. method:: createNewNetwork(self, nodeCnt, edgesCnt, clustersCnt=4)
+
+
+      Generate Network and initialize NetworkOptimizer with new network
+
+      :param nodeCnt: (int) Amount of nodes to be generated
+      :param edgesCnt: (int) Amount of edges to be generated
+      :param clusterCenters: (int) Amount of clusters centers to be generated
+
+
+   .. method:: setupMessageHandlers(self)
+
+
+      Setup callbacks for specific stdin string events ("fishdown","strucdown","up","generate")
+              
+
+
+
+.. data:: pythonCommunicator
+   
+
+   
+

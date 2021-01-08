@@ -1,0 +1,141 @@
+:mod:`python.networkoptimizer`
+==============================
+
+.. py:module:: python.networkoptimizer
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   python.networkoptimizer.NetworkOptimizer
+
+
+
+.. py:class:: NetworkOptimizer
+
+   Optimizes network positions using custom gradient descent
+
+   .. method:: initOptimization(self, network, focalPoint, radius)
+
+
+      Initializes optimization variables and initial gradient states, initial node positions and initial edge connections
+      like: Gradient momentum, Terms to be minimized at node level, Edge connection Positions of original layout, 
+      Edge connection Positions before and after performing an optimization step, Edge connection Positions of the fisheye target layout
+
+      :param network: {"nodes"=[],"edges"=[]} Network to be optimized/approximated
+      :param focalPoint: [int,int] focal point of target fisheye distortion
+      :param radius: (int) radius of fisheye distortion boundary
+
+
+   .. method:: calculateEdgeCrossLoss(self, stepLConnVec, stepRConnVec)
+
+
+      Detects edge crossings in focal area and increases node loss where there is a low angle between crossings.
+      (edge1 counter-clockwise rotation, edge2 clockwise rotation)
+
+      :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step
+      :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step
+      :return: edge losses at each crossing, indices to find edges in global context
+
+
+   .. method:: calculateOverlapLoss(self, stepLConnVec, stepRConnVec)
+
+
+      Detects overlapping nodes in focal area and increases node loss if nodes are too close.
+      Inserts virtual edge with minimum length to nudge nodes apart
+
+      :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step
+      :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step
+      :return: edge losses at each node overlapping edge, indices to find edges in global context
+
+
+   .. method:: calculateStructuralLoss(self, stepLConnVec, stepRConnVec)
+
+
+      Incentivised the overall structure of the layout, by incentivising the edge orientations to follow the
+      original layouts orientations, while letting the edge lengths follow the lengths of the 
+      fisheye distortet layout
+
+      :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step
+      :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step
+      :return: structural edge losses at each edge, indices to find edges in global context
+
+
+   .. method:: calculateNodeLoss(self, stepLConnVec, stepRConnVec, rConnVecOriginal)
+
+
+      Calculates loss (or minimization term) for each edge and then summs the edges losses for the nodes
+      to calculate the x, y loss at each node.
+
+      :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step
+      :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step
+      :param rConnVecOriginal: np.array((nodes,2)) Right hand side edgeconnection positions of the original layout
+      :return: x,y loss at each node for step
+
+
+   .. method:: step(self)
+
+
+      Perform a gradient descent step: 
+
+      1) Move last node positions by gradient * velocity value 
+
+      2) Calculate node loss at the new positions 
+
+      3) Update Velocity and gradient direction based on if loss increased or decreased 
+
+      4) Set last positions to updated positions 
+
+      5) Repeat until optimized
+
+
+   .. method:: calcOrientations(self, startPositions, endPositions)
+
+
+      Calculate the nomalized orientations between 2 Position Vectors
+
+
+   .. method:: calcLenghts(self, startPositions, endPositions)
+
+
+      Calculate vector lengths between 2 position vectors
+
+
+   .. method:: calcVectorLenghts(self, vector)
+
+
+      Calculate vector lengths of a single position vector
+
+
+   .. method:: getEdgeConnPositions(self, nodeVec, edgeConns)
+
+
+      Get a matrix where each index of a connection table was replaced by the corresponding position of the nodes table
+      :param nodeVec: the vector of node positions to get the position values from
+      :param edgeConns: rows of connected edge indices
+
+
+   .. method:: calcFisheyePositions(self, nodes, focalPoint, radius)
+
+
+      Calculate the new node positions distorted by a fishey lens
+      :param nodes: original positions of the nodes
+      :param focalPoint: [x,y] focal Point of the fisheye lens (center)
+      :param radius: radius of the fisheye lens/distortion
+
+
+   .. method:: extractFocalEdges(self, lConnPositions, rConnPositions)
+
+
+      Extract the nodes and edges inside the focal area of the fisheye lens
+
+      :param lConnPositions: np.array((nodes,2)) Left hand side edgeconnection positions of step
+      :param rConnPositions: np.array((nodes,2)) Right hand side edgeconnection positions of step
+
+
+

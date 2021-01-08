@@ -1,0 +1,28 @@
+<div id="mainpane">
+    <div id="optionspane">
+        <div id="buttonrack">
+            <button id="jsfisheye" class="active">JS Fisheye Transformation</button>
+            <button id="pyfisheye">PY Fisheye Approximation</button>
+            <button id="structurefisheye">Structure Fisheye Approximation</button>
+        </div>
+        <div class="slidecontainer">
+            <input type="range" min="0" max="100" value="40" class="slider" id="magFactorSlider">
+            <p>MagFactor: <span id="magValue"></span></p>
+            <input type="range" min="0" max="1000" value="400" class="slider" id="radiusSlider">
+            <p>Radius: <span id="radiusValue"></span></p>
+            <input type="range" min="0" max="100" value="100" class="slider" id="mixSlider">
+            <p>MixFactor: <span id="mixValue"></span></p>
+        </div>
+        <div class="divider"></div>
+        <div class="slidecontainer">
+            <input type="range" min="20" max="10000" value="500" class="slider" id="nodeCntSlider">
+            <p>NodeAmount: <span id="nodeCntValue"></span></p>
+            <input type="range" min="1" max="20" value="4" class="slider" id="centersCntSlider">
+            <p>Centers: <span id="centersCntValue"></span></p>
+            <input type="range" min="1" max="20" value="4" class="slider" id="spreadWidthSlider">
+            <p>Cluster Spread: <span id="spreadWidthValue"></span></p>
+            <button id="genNetworkButton">Generate</button>
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
+</div>

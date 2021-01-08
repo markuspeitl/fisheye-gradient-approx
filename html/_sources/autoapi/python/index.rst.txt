@@ -1,0 +1,18 @@
+:mod:`python`
+=============
+
+.. py:module:: python
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   networkgenerator/index.rst
+   networkoptimizer/index.rst
+   pythoncommunicator/index.rst
+   pythonmessenger/index.rst
+
+

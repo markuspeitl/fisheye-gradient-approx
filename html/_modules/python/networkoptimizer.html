@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>python.networkoptimizer &mdash; Structural fish eye approximation 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Structural fish eye approximation
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Structural fish eye approximation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>python.networkoptimizer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for python.networkoptimizer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="NetworkOptimizer"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer">[docs]</a><span class="k">class</span> <span class="nc">NetworkOptimizer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Optimizes network positions using custom gradient descent&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sets default variable settings&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradFactor</span> <span class="o">=</span> <span class="mf">2.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocityFactor</span> <span class="o">=</span> <span class="mf">1.4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">magnificationFactor</span> <span class="o">=</span> <span class="mf">4.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizeToFisheye</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startAtFisheye</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structuralConstraintsEnabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">overlapPreventionEnabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crossingMaximEnabled</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">useOriginalAsLossRef</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structuralweight</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readabilityweight</span> <span class="o">=</span> <span class="mf">3.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lossThreshold</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="NetworkOptimizer.initOptimization"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.initOptimization">[docs]</a>    <span class="k">def</span> <span class="nf">initOptimization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">network</span><span class="p">,</span><span class="n">focalPoint</span><span class="p">,</span><span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes optimization variables and initial gradient states, initial node positions and initial edge connections</span>
+<span class="sd">        like: Gradient momentum, Terms to be minimized at node level, Edge connection Positions of original layout, </span>
+<span class="sd">        Edge connection Positions before and after performing an optimization step, Edge connection Positions of the fisheye target layout</span>
+<span class="sd">        </span>
+<span class="sd">        :param network: {&quot;nodes&quot;=[],&quot;edges&quot;=[]} Network to be optimized/approximated</span>
+<span class="sd">        :param focalPoint: [int,int] focal point of target fisheye distortion</span>
+<span class="sd">        :param radius: (int) radius of fisheye distortion boundary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focalPoint</span> <span class="o">=</span> <span class="n">focalPoint</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fisheyePositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcFisheyePositions</span><span class="p">(</span><span class="n">network</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">focalPoint</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">)</span>
+        <span class="c1">#print(self.fisheyePositions)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">network</span><span class="p">[</span><span class="s2">&quot;nodes&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">network</span><span class="p">[</span><span class="s2">&quot;edges&quot;</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># -------- Variable Initializations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="c1">#gradient direcations and initial values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradFactor</span>
+        <span class="c1">#Gradient momentum</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1">#Terms to be minimized at node level</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodeLoss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1">#Edge connection Positions of original layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origLConnPositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origRConnPositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1">#Edge connection Positions before and after performing an optimization step</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastNodePositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+
+        <span class="c1">#Edge connection Positions of the fisheye target layout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lFisheyeConnPositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rFisheyeConnPositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">edgesCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="c1"># -----------------------------------------------</span>
+
+        <span class="c1"># -------- Setting initial Values</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span><span class="p">:</span>
+            <span class="n">startNodeId</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">startNode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">startNodeId</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origLConnPositions</span><span class="p">[</span><span class="n">cnt</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">startNode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lFisheyeConnPositions</span><span class="p">[</span><span class="n">cnt</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fisheyePositions</span><span class="p">[</span><span class="n">startNodeId</span><span class="p">]</span>
+            <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span><span class="p">:</span>
+            <span class="n">endNodeId</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">endNode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">endNodeId</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">origRConnPositions</span><span class="p">[</span><span class="n">cnt</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">endNode</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rFisheyeConnPositions</span><span class="p">[</span><span class="n">cnt</span><span class="p">,:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fisheyePositions</span><span class="p">[</span><span class="n">endNodeId</span><span class="p">]</span>
+            <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">network</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">origOrientations</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcOrientations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origLConnPositions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">origRConnPositions</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origLConnPositions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origRConnPositions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastNodePositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodes</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">fisheyeOrientations</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fisheyeLengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcOrientations</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lFisheyeConnPositions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">rFisheyeConnPositions</span><span class="p">)</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startAtFisheye</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lFisheyeConnPositions</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rFisheyeConnPositions</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastNodePositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fisheyePositions</span></div>
+
+        <span class="c1"># -----------------------------------------------</span>
+
+<div class="viewcode-block" id="NetworkOptimizer.calculateEdgeCrossLoss"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calculateEdgeCrossLoss">[docs]</a>    <span class="k">def</span> <span class="nf">calculateEdgeCrossLoss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detects edge crossings in focal area and increases node loss where there is a low angle between crossings.</span>
+<span class="sd">        (edge1 counter-clockwise rotation, edge2 clockwise rotation)</span>
+<span class="sd">        </span>
+<span class="sd">        :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step</span>
+<span class="sd">        :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step</span>
+<span class="sd">        :return: edge losses at each crossing, indices to find edges in global context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#To Filter out connected edges</span>
+        <span class="n">minStartDistance</span> <span class="o">=</span> <span class="mf">0.05</span>
+        <span class="n">minEndDistance</span> <span class="o">=</span> <span class="mf">0.05</span>
+        
+        <span class="n">directions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalConnPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">start2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dir2</span> <span class="o">=</span> <span class="n">directions</span>
+
+        <span class="c1">#self.crossingsTable = np.zeros((directions.shape[0],directions.shape[0],2))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crossingsLookup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">directions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">directions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="n">inRangeStart</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">+</span> <span class="n">minStartDistance</span>
+        <span class="n">inRangeEnd</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">minStartDistance</span>
+
+        <span class="c1">#iterations = 3</span>
+        <span class="n">iterations</span> <span class="o">=</span> <span class="n">directions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">iterations</span><span class="p">):</span>
+
+            <span class="n">start1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">dir1</span> <span class="o">=</span> <span class="n">directions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="n">dir12cross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">dir1</span><span class="p">,</span><span class="n">dir2</span><span class="p">)</span>
+
+            <span class="n">start12cross</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">((</span><span class="n">start1</span> <span class="o">-</span> <span class="n">start2</span><span class="p">),</span><span class="n">dir1</span><span class="p">)</span>
+
+            <span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">dir12cross</span><span class="o">/</span><span class="n">start12cross</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="o">-</span><span class="mi">1000</span><span class="p">)</span>
+            <span class="c1">#print(u)</span>
+
+            <span class="n">incondition</span><span class="o">=</span> <span class="p">(</span><span class="n">u</span> <span class="o">&gt;=</span> <span class="n">inRangeStart</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">u</span> <span class="o">&lt;=</span> <span class="n">inRangeEnd</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">crossingsLookup</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">incondition</span>
+
+        <span class="n">crossingsListIndices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crossingsLookup</span><span class="p">)</span>
+
+        <span class="n">globalEdgePairIndices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalConnIndices</span><span class="p">[</span><span class="n">crossingsListIndices</span><span class="p">]</span>
+        <span class="n">leftEdges</span> <span class="o">=</span> <span class="n">globalEdgePairIndices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">rightEdges</span> <span class="o">=</span> <span class="n">globalEdgePairIndices</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+        <span class="c1">#rotationMat = np.array([[np.cos(angle),-np.sin(angle)],[np.sin(angle),np.cos(angle)]])</span>
+        <span class="n">rotationMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)]])</span>
+        <span class="n">counterRotMat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">angle</span><span class="p">),</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="n">angle</span><span class="p">)],[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="n">angle</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">angle</span><span class="p">)]])</span>
+
+        <span class="n">leftCrossLConnPositions</span> <span class="o">=</span> <span class="n">stepLConnVec</span><span class="p">[</span><span class="n">leftEdges</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">leftCrossRConnPositions</span> <span class="o">=</span> <span class="n">stepLConnVec</span><span class="p">[</span><span class="n">leftEdges</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">leftCrossOrientations</span><span class="p">,</span> <span class="n">leftCrossLengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcOrientations</span><span class="p">(</span><span class="n">leftCrossLConnPositions</span><span class="p">,</span><span class="n">leftCrossRConnPositions</span><span class="p">)</span>
+        <span class="c1">#print(leftCrossOrientations)</span>
+        <span class="c1">#print(np.sin(angle) * leftCrossOrientations[0,0] + np.cos(angle) * leftCrossOrientations[0,1])</span>
+        <span class="c1">#print(np.cos(angle) * leftCrossOrientations[0,0] - np.sin(angle) * leftCrossOrientations[0,1])</span>
+        <span class="n">leftCrossOrientations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">leftCrossOrientations</span><span class="p">,</span><span class="n">rotationMat</span><span class="p">)</span>
+        <span class="c1">#print(leftCrossOrientations)</span>
+
+        <span class="n">rightCrossLConnPositions</span> <span class="o">=</span> <span class="n">stepLConnVec</span><span class="p">[</span><span class="n">rightEdges</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">rightCrossRConnPositions</span> <span class="o">=</span> <span class="n">stepLConnVec</span><span class="p">[</span><span class="n">rightEdges</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">rightCrossOrientations</span><span class="p">,</span> <span class="n">rightCrossLengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcOrientations</span><span class="p">(</span><span class="n">rightCrossLConnPositions</span><span class="p">,</span><span class="n">rightCrossRConnPositions</span><span class="p">)</span>
+        <span class="n">rightCrossOrientations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rightCrossOrientations</span><span class="p">,</span><span class="n">counterRotMat</span><span class="p">)</span>
+
+        <span class="c1">#print(leftCrossLConnPositions)</span>
+        <span class="c1">#print(rightCrossLConnPositions)</span>
+        <span class="n">lconns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">leftCrossLConnPositions</span><span class="p">,</span><span class="n">rightCrossLConnPositions</span><span class="p">))</span>
+        <span class="n">rconns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">leftCrossRConnPositions</span><span class="p">,</span><span class="n">rightCrossRConnPositions</span><span class="p">))</span>
+        <span class="n">orientations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">leftCrossOrientations</span><span class="p">,</span><span class="n">rightCrossOrientations</span><span class="p">))</span>
+
+        <span class="c1">#print(leftCrossLengths)</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">leftCrossLengths</span><span class="p">,</span><span class="n">rightCrossLengths</span><span class="p">))</span>
+
+        <span class="n">globalindices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">globalEdgePairIndices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">globalEdgePairIndices</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="c1">#print(lconns.shape)</span>
+        <span class="c1">#print(rconns.shape)</span>
+        <span class="c1">#print(orientations.shape)</span>
+        <span class="c1">#print(lengths.shape)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lconns</span> <span class="o">-</span> <span class="n">rconns</span> <span class="o">-</span> <span class="n">orientations</span><span class="o">*</span><span class="n">lengths</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]),</span><span class="mi">2</span><span class="p">),</span> <span class="n">globalindices</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.calculateOverlapLoss"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calculateOverlapLoss">[docs]</a>    <span class="k">def</span> <span class="nf">calculateOverlapLoss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Detects overlapping nodes in focal area and increases node loss if nodes are too close.</span>
+<span class="sd">        Inserts virtual edge with minimum length to nudge nodes apart</span>
+<span class="sd">        </span>
+<span class="sd">        :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step</span>
+<span class="sd">        :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step</span>
+<span class="sd">        :return: edge losses at each node overlapping edge, indices to find edges in global context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xm</span><span class="p">,</span> <span class="n">xn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focalNodePositions</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalNodePositions</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">ym</span><span class="p">,</span> <span class="n">yn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focalNodePositions</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalNodePositions</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">distanceMatrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">xm</span> <span class="o">-</span> <span class="n">xn</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ym</span> <span class="o">-</span> <span class="n">yn</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">focalNodePositions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mi">100000</span>
+        <span class="c1">#print(&quot;distanceMatrix&quot;)</span>
+        <span class="c1">#print(distanceMatrix)</span>
+        <span class="n">noderadius</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">mindistance</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="n">focalOverlappingIndices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">distanceMatrix</span> <span class="o">&lt;</span> <span class="n">noderadius</span><span class="p">)</span>
+        <span class="n">globalOverlappingIndices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">focalNodeIndices</span><span class="p">[</span><span class="n">focalOverlappingIndices</span><span class="p">]</span>
+        <span class="c1">#print(&quot;overlappingIndices&quot;)</span>
+        <span class="c1">#print(overlappingIndices)</span>
+
+        <span class="c1">#Debugging overlapping selection</span>
+        <span class="c1">#self.newNodePositions[globalOverlappingIndices[:,0]] = np.array([0,0])</span>
+        <span class="c1">#self.newNodePositions[globalOverlappingIndices[:,1]] = np.array([0,0])</span>
+        
+        <span class="n">readLConnPositions</span> <span class="o">=</span> <span class="n">stepLConnVec</span><span class="p">[</span><span class="n">globalOverlappingIndices</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">readRConnPositions</span> <span class="o">=</span> <span class="n">stepLConnVec</span><span class="p">[</span><span class="n">globalOverlappingIndices</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]]</span>
+
+        <span class="n">readOrientations</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcOrientations</span><span class="p">(</span><span class="n">readLConnPositions</span><span class="p">,</span><span class="n">readRConnPositions</span><span class="p">)</span>
+
+        <span class="c1">#Nudges nodes to the other direction as long as they overlap</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="n">noderadius</span> <span class="o">+</span> <span class="n">noderadius</span> <span class="o">+</span> <span class="n">mindistance</span>
+
+        <span class="n">overLappingEdgeLoss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">readLConnPositions</span> <span class="o">-</span> <span class="n">readRConnPositions</span> <span class="o">-</span> <span class="n">readOrientations</span><span class="o">*</span><span class="n">length</span><span class="p">),</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">overLappingEdgeLoss</span><span class="p">,</span> <span class="n">globalOverlappingIndices</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.calculateStructuralLoss"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calculateStructuralLoss">[docs]</a>    <span class="k">def</span> <span class="nf">calculateStructuralLoss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Incentivised the overall structure of the layout, by incentivising the edge orientations to follow the</span>
+<span class="sd">        original layouts orientations, while letting the edge lengths follow the lengths of the </span>
+<span class="sd">        fisheye distortet layout</span>
+<span class="sd">        </span>
+<span class="sd">        :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step</span>
+<span class="sd">        :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step</span>
+<span class="sd">        :return: structural edge losses at each edge, indices to find edges in global context</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">orientations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origOrientations</span>
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizeToFisheye</span><span class="p">):</span>
+            <span class="n">orientations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fisheyeOrientations</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">stepLConnVec</span> <span class="o">-</span> <span class="n">stepRConnVec</span> <span class="o">-</span> <span class="n">orientations</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fisheyeLengths</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]),</span><span class="mi">2</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span></div>
+    
+<div class="viewcode-block" id="NetworkOptimizer.calculateNodeLoss"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calculateNodeLoss">[docs]</a>    <span class="k">def</span> <span class="nf">calculateNodeLoss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">,</span><span class="n">rConnVecOriginal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates loss (or minimization term) for each edge and then summs the edges losses for the nodes</span>
+<span class="sd">        to calculate the x, y loss at each node.</span>
+<span class="sd">        </span>
+<span class="sd">        :param stepLConnVec: np.array((nodes,2)) Left hand side edgeconnection positions of step</span>
+<span class="sd">        :param stepRConnVec: np.array((nodes,2)) Right hand side edgeconnection positions of step</span>
+<span class="sd">        :param rConnVecOriginal: np.array((nodes,2)) Right hand side edgeconnection positions of the original layout</span>
+<span class="sd">        :return: x,y loss at each node for step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#For debugging focal area</span>
+        <span class="c1">#self.extractFocalEdges(stepLConnVec,stepRConnVec)</span>
+        <span class="c1">#self.newNodePositions[self.focalNodeIndices] = np.array([0,0])</span>
+        
+        <span class="c1">#Calculate Loss at each node</span>
+        
+        <span class="n">constaintEdgesLossResults</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">constaintEdgeConns</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">structuralConstraintsEnabled</span><span class="p">):</span>
+            <span class="n">rconnvec</span> <span class="o">=</span> <span class="n">stepRConnVec</span>
+            <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">useOriginalAsLossRef</span><span class="p">):</span>
+                <span class="n">rconnvec</span> <span class="o">=</span> <span class="n">rConnVecOriginal</span>
+            <span class="n">structureEdgeLoss</span><span class="p">,</span> <span class="n">structureEdgeConns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateStructuralLoss</span><span class="p">(</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">rconnvec</span><span class="p">)</span>
+            <span class="n">structureEdgeLoss</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structuralweight</span>
+            <span class="n">constaintEdgesLossResults</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">structureEdgeLoss</span><span class="p">)</span>
+            <span class="n">constaintEdgeConns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">structureEdgeConns</span><span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlapPreventionEnabled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">crossingMaximEnabled</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extractFocalEdges</span><span class="p">(</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">overlapPreventionEnabled</span><span class="p">):</span>
+            <span class="n">readEdgeLoss</span><span class="p">,</span> <span class="n">readEdgeConns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateOverlapLoss</span><span class="p">(</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">)</span>
+            <span class="n">readEdgeLoss</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readabilityweight</span>
+            <span class="n">constaintEdgesLossResults</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">readEdgeLoss</span><span class="p">)</span>
+            <span class="n">constaintEdgeConns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">readEdgeConns</span><span class="p">)</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">crossingMaximEnabled</span><span class="p">):</span>
+            <span class="n">crossEdgeLoss</span><span class="p">,</span> <span class="n">crossEdgeConns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateEdgeCrossLoss</span><span class="p">(</span><span class="n">stepLConnVec</span><span class="p">,</span><span class="n">stepRConnVec</span><span class="p">)</span>
+            <span class="n">constaintEdgesLossResults</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">crossEdgeLoss</span><span class="p">)</span>
+            <span class="n">constaintEdgeConns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">crossEdgeConns</span><span class="p">)</span>
+
+        <span class="c1">#self.edgeLoss =  + self.readabilityweight * self.calculateReadAbilityLoss(stepLConnVec,stepRConnVec)</span>
+
+        <span class="n">nodeLoss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeCnt</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+        <span class="c1">#Partial Summation term</span>
+        <span class="k">for</span> <span class="n">edgeLossRes</span><span class="p">,</span> <span class="n">edgeConnsRes</span>  <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">constaintEdgesLossResults</span><span class="p">,</span><span class="n">constaintEdgeConns</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">edgeLossRes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="n">selEdge</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">edgeConnsRes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">nodeLoss</span><span class="p">[</span><span class="n">selEdge</span><span class="p">]</span> <span class="o">+=</span> <span class="n">edgeLossRes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">nodeLoss</span></div>
+    
+<div class="viewcode-block" id="NetworkOptimizer.step"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Perform a gradient descent step: \n</span>
+<span class="sd">        1) Move last node positions by gradient * velocity value \n</span>
+<span class="sd">        2) Calculate node loss at the new positions \n</span>
+<span class="sd">        3) Update Velocity and gradient direction based on if loss increased or decreased \n</span>
+<span class="sd">        4) Set last positions to updated positions \n</span>
+<span class="sd">        5) Repeat until optimized</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastNodePositions</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span>
+        <span class="c1">#print(&quot;CURR Grad: &quot;)</span>
+        <span class="c1">#print(self.grad)</span>
+        <span class="c1">#print(&quot;LASTPOS:&quot;)</span>
+        <span class="c1">#print(self.lastNodePositions)</span>
+        <span class="c1">#print(&quot;NEWPOS:&quot;)</span>
+        <span class="c1">#print(self.newNodePositions)</span>
+
+        <span class="c1">#lconnVec = []</span>
+        <span class="n">updatedConnPositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getEdgeConnPositions</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span><span class="p">)</span>
+        <span class="c1">#print(updatedConnPositions)</span>
+
+        <span class="c1">#newLoss = self.calculateNodeLoss(updatedConnPositions[0],self.lastConnPositions[1],self.network[&quot;edges&quot;])</span>
+        <span class="c1">#newLoss = self.calculateNodeLoss(updatedConnPositions[0],updatedConnPositions[1],self.network[&quot;edges&quot;])</span>
+        <span class="n">newLoss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculateNodeLoss</span><span class="p">(</span><span class="n">updatedConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">updatedConnPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">origRConnPositions</span><span class="p">)</span>
+
+        <span class="c1">#print(&quot;NEWLOSS&quot;)</span>
+        <span class="c1">#print(newLoss)</span>
+        <span class="c1">#print(&quot;TOTALLOSS: &quot; + str(np.sum(newLoss)))</span>
+
+        <span class="c1">#print(&quot;LossDIFF&quot;)</span>
+        <span class="c1">#print(newLoss - self.nodeLoss)</span>
+        <span class="n">lossDiff</span> <span class="o">=</span> <span class="n">newLoss</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeLoss</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span><span class="p">[</span><span class="n">lossDiff</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocityFactor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span><span class="p">[</span><span class="n">lossDiff</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span><span class="p">[</span><span class="n">newLoss</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span><span class="p">[</span><span class="n">newLoss</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span><span class="p">[</span><span class="n">newLoss</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradvelocity</span><span class="p">[</span><span class="n">newLoss</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">lossThreshold</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+        <span class="n">switchGrad</span> <span class="o">=</span> <span class="p">((</span><span class="n">newLoss</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeLoss</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="c1">#print(&quot;switchGrad&quot;)</span>
+        <span class="c1">#print(switchGrad)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grad</span> <span class="o">*</span> <span class="n">switchGrad</span><span class="c1">#* 0.8</span>
+        <span class="c1">#print(&quot;NewGrad:&quot;)</span>
+        <span class="c1">#print(self.grad)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodeLoss</span> <span class="o">=</span> <span class="n">newLoss</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">updatedConnPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastConnPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">updatedConnPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastNodePositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span></div>
+
+        <span class="c1">##network[&quot;nodes&quot;] = out_node_positions.tolist()</span>
+
+<div class="viewcode-block" id="NetworkOptimizer.calcOrientations"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calcOrientations">[docs]</a>    <span class="k">def</span> <span class="nf">calcOrientations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">startPositions</span><span class="p">,</span><span class="n">endPositions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate the nomalized orientations between 2 Position Vectors&quot;&quot;&quot;</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcLenghts</span><span class="p">(</span><span class="n">startPositions</span><span class="p">,</span><span class="n">endPositions</span><span class="p">)</span>
+        <span class="c1">#return (rconnVec - lconnVec)/lengths</span>
+        <span class="n">dirVector</span> <span class="o">=</span><span class="p">(</span><span class="n">startPositions</span> <span class="o">-</span> <span class="n">endPositions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">dirVector</span><span class="p">,</span><span class="n">lengths</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]),</span> <span class="n">lengths</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.calcLenghts"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calcLenghts">[docs]</a>    <span class="k">def</span> <span class="nf">calcLenghts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">startPositions</span><span class="p">,</span><span class="n">endPositions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate vector lengths between 2 position vectors&quot;&quot;&quot;</span>
+        <span class="n">powermat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">startPositions</span> <span class="o">-</span> <span class="n">endPositions</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">summat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">powermat</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1">#print(summat)</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">summat</span><span class="p">)</span>
+        <span class="c1">#print(lengths)</span>
+        <span class="k">return</span> <span class="n">lengths</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.calcVectorLenghts"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calcVectorLenghts">[docs]</a>    <span class="k">def</span> <span class="nf">calcVectorLenghts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calculate vector lengths of a single position vector&quot;&quot;&quot;</span>
+        <span class="n">powermat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c1">#print(powermat)</span>
+        <span class="n">summat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">powermat</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1">#print(summat)</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">summat</span><span class="p">)</span>
+        <span class="c1">#print(lengths)</span>
+        <span class="k">return</span> <span class="n">lengths</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.getEdgeConnPositions"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.getEdgeConnPositions">[docs]</a>    <span class="k">def</span> <span class="nf">getEdgeConnPositions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nodeVec</span><span class="p">,</span><span class="n">edgeConns</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get a matrix where each index of a connection table was replaced by the corresponding position of the nodes table</span>
+<span class="sd">        :param nodeVec: the vector of node positions to get the position values from</span>
+<span class="sd">        :param edgeConns: rows of connected edge indices</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">connPositions</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">edgeConns</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">)),</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">edgeConns</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="mi">2</span><span class="p">))]</span>
+        <span class="n">cnt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">edgeConns</span><span class="p">:</span>
+            <span class="n">startNodeId</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">endNodeId</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">edge</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">connPositions</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">cnt</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">nodeVec</span><span class="p">[</span><span class="n">startNodeId</span><span class="p">]</span>
+            <span class="n">connPositions</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">cnt</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">nodeVec</span><span class="p">[</span><span class="n">endNodeId</span><span class="p">]</span>
+            <span class="n">cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">connPositions</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.calcFisheyePositions"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.calcFisheyePositions">[docs]</a>    <span class="k">def</span> <span class="nf">calcFisheyePositions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">nodes</span><span class="p">,</span><span class="n">focalPoint</span><span class="p">,</span><span class="n">radius</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the new node positions distorted by a fishey lens</span>
+<span class="sd">        :param nodes: original positions of the nodes</span>
+<span class="sd">        :param focalPoint: [x,y] focal Point of the fisheye lens (center)</span>
+<span class="sd">        :param radius: radius of the fisheye lens/distortion</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#self.fisheyePositions = np.zeros((nodeCnt,2))</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnificationFactor</span>
+
+        <span class="n">nodePositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+        <span class="n">orientations</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcOrientations</span><span class="p">(</span><span class="n">nodePositions</span><span class="p">,</span><span class="n">focalPoint</span><span class="p">)</span>
+        <span class="n">boundaryPoints</span> <span class="o">=</span> <span class="n">focalPoint</span> <span class="o">+</span> <span class="n">orientations</span> <span class="o">*</span> <span class="n">radius</span>
+        <span class="c1"># == radius ???</span>
+        <span class="n">boundaryDistances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcLenghts</span><span class="p">(</span><span class="n">boundaryPoints</span><span class="p">,</span> <span class="n">focalPoint</span><span class="p">)</span>
+        <span class="n">nodeDistances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcLenghts</span><span class="p">(</span><span class="n">nodePositions</span><span class="p">,</span> <span class="n">focalPoint</span><span class="p">)</span>
+
+        <span class="n">focalDistanceRatios</span> <span class="o">=</span> <span class="n">nodeDistances</span><span class="o">/</span><span class="n">boundaryDistances</span>
+        <span class="n">distortedRatios</span> <span class="o">=</span> <span class="p">((</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">focalDistanceRatios</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="n">focalDistanceRatios</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">focalPoint</span> <span class="o">+</span> <span class="p">(</span><span class="n">boundaryPoints</span> <span class="o">-</span> <span class="n">focalPoint</span><span class="p">)</span> <span class="o">*</span> <span class="n">distortedRatios</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="NetworkOptimizer.extractFocalEdges"><a class="viewcode-back" href="../../autoapi/python/networkoptimizer/index.html#python.networkoptimizer.NetworkOptimizer.extractFocalEdges">[docs]</a>    <span class="k">def</span> <span class="nf">extractFocalEdges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">lConnPositions</span><span class="p">,</span><span class="n">rConnPositions</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract the nodes and edges inside the focal area of the fisheye lens</span>
+<span class="sd">        </span>
+<span class="sd">        :param lConnPositions: np.array((nodes,2)) Left hand side edgeconnection positions of step</span>
+<span class="sd">        :param rConnPositions: np.array((nodes,2)) Right hand side edgeconnection positions of step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Extract edges and nodes inside focal area</span>
+        <span class="n">nodesFocalDistances</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calcLenghts</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">focalPoint</span><span class="p">)</span>
+        <span class="n">nodeinsidecondition</span> <span class="o">=</span> <span class="n">nodesFocalDistances</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focalNodeIndices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">nodeinsidecondition</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">focalNodePositions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">newNodePositions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">focalNodeIndices</span><span class="p">]</span>
+       
+        <span class="n">edgeConnChecker</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">focalNodeIndices</span><span class="p">)</span>
+        <span class="c1">#and</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">edgeConnChecker</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">focalConnPositions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">lConnPositions</span><span class="p">[</span><span class="n">condition</span><span class="p">],</span><span class="n">rConnPositions</span><span class="p">[</span><span class="n">condition</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">focalConnIndices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edgeConns</span><span class="p">[</span><span class="n">condition</span><span class="p">]</span></div></div>
+
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Markus Peitl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

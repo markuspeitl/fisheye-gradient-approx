@@ -1,0 +1,80 @@
+:mod:`python.networkgenerator`
+==============================
+
+.. py:module:: python.networkgenerator
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   python.networkgenerator.NetworkGenerator
+
+
+
+.. py:class:: NetworkGenerator
+
+   A Genrator for generating new random networks
+
+   .. method:: genClusterNodes(self, numCluster, numPoints, windowSize=100, bounds=[0, 900, 0, 900])
+
+
+      Generates normally distributed clusters of nodes
+
+      :param numCluster: (int) Amount of clusters centers to be generated/chosen
+      :param numPoints: (int) Amount of node centers (nodes) to be generated
+      :param windowSize: (int) Data range around cluster (radius) center in which cluster nodes are generated
+      :param bounds: (int[4]) [startx,endx,starty,endy] bounds of target data region in which the clusters are to be generated
+
+      :return: allpoints, allLabels np.array((numPoints,2)), (np.array((numPoints,1),dtype=int)) Genrated points positions as vector and 
+      corresponding cluster ids as label vector
+
+
+   .. method:: generateNetwork(self, nodeCnt, edgeCnt, xStart, xEnd, yStart, yEnd, closerSamplingIterations=30, clusterCenters=4)
+
+
+      Generate Network with random nodes and connections with normal distribution node positions
+
+      :param nodeCnt: (int) Amount of nodes to be generated
+      :param edgeCnt: (int) Amount of edges to be generated
+      :param xStart,xEnd,yStart,yEnd: (int) Bounds of the data space for generation
+      :param closerSamplingIterations: (int) Amount of other (possibly closer)edgeconnections to consider when selecting edge
+      :param clusterCenters: (int) Amount of clusters centers to be generated
+      :param bounds: (int[4]) [startx,endx,starty,endy] bounds of target data region in which the clusters are to be generated
+
+      :return: nework ({"nodes":[],"edges":[],"nodeclusters":[]}) lists of nodes, edgeconnection indices and nodecluster ids
+
+
+   .. method:: readDatasetToNP(self, name)
+
+
+
+   .. method:: firstLoginAsNode(self, nodesNp)
+
+
+
+   .. method:: selectNetRecursive(self, startEdges, newEdges, origEdges, connsCnt, maxNodes)
+
+
+
+   .. method:: extractSubnet(self, edgesNp, nodesNp)
+
+
+
+   .. method:: extractSubnet2(self, edgesNp, nodesNp)
+
+
+
+   .. method:: createNewDataset(self, name, edgesNp, nodesNp)
+
+
+
+   .. method:: readDataset(self)
+
+
+
+

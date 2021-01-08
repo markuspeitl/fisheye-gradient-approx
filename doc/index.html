@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Welcome to Structural fish eye approximation’s documentation! &mdash; Structural fish eye approximation 1.0 documentation</title>
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="customcss/style.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Structural fish eye approximation
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Structural fish eye approximation</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Welcome to Structural fish eye approximation’s documentation!</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="welcome-to-structural-fish-eye-approximation-s-documentation">
+<h1>Welcome to Structural fish eye approximation’s documentation!<a class="headerlink" href="#welcome-to-structural-fish-eye-approximation-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+
+<img src="imgs/screenshot1.jpg"></img>
+
+<h2>How to install:</h2>
+<p>
+	1. Make sure you have python 3.x installed<br>
+	2. Go to project /src/<br>
+	3. run command "pip install requirements.txt" (to install numpy)<br>
+	4. Make sure nodejs/npm are installed<br>
+	5. run command "npm install"<br><br>
+	
+	To run the application run "npm run start" and then open up your browser at <a href="http://localhost:3000">http://localhost:3000</a><br>
+</p>
+
+<h2>How to use:</h2>
+<p>
+	<img src="imgs/orig.png"></img>
+
+	<p><h5>Js Fisheye Transformation:</h5>
+	If this option is selected then, when the network is clicked or dragged a graphical fisheye distortion is performed directly in javascript code.</p>
+	
+	<img src="imgs/jsfisheye.png"></img>
+	
+	<p><h5>Py Fisheye Approximation:</h5>
+	If this option is selected and the network is clicked, then a network optimization (custom gradient descent) is performed by the server (with python code),
+	with the set goal of approximating a graphical fisheye distortion</p>
+	
+	<img src="imgs/pyfisheye.png"></img>
+	
+	<p><h5>Structure Fisheye Approximation:</h5>
+	If this option is selected and the network is clicked, then a network optimization (custom gradient descent) is performed by the server (with python code).<br>
+	The goal here is approximating a graphical fisheye, while following several contraints (non-overlapping nodes in focal area, edge orientations still the
+	same as in original layout, edge crossings maximization)</p>
+	
+	<img src="imgs/strucfisheye.png"></img>
+	
+	<b>Parameters:</b><br>
+		- MagFactor: The degree of magnification of the fisheye views<br>
+		- Radius: The radius of the fisheye focal boundary region<br>
+		- Mixfactor: Interpolation with the original Layout, when distance of node to focalPoint exceeds radius (the boundary)<br>
+		
+	<p><h5>Generate:</h5>
+	In the generate section a new Network can be created with a clusterCenterAmount slider and a NodeCount slider</p>
+	
+</p>
+
+<h2>Code Architecture (JavaScript, NodeJs, Python):</h2>
+<p>
+
+	<h3>JavaScript:</h3>
+
+	<div class="intended">
+		<p>src/public/js/</p>
+
+		<p><h5>fisheye.js - Client and JavaScript drawing:</h5>
+		Sends/receives messages to/from the python process running on the server side.
+		Manages the node and edge (network) drawing process. Handles smooth user interaction and view interaction.
+		Provides settings for fisheye zoom customization.</p>
+	</div>
+	
+	
+	<h3>NodeJs (TypeScript):</h3>
+	<div class="intended">
+		<p>src/app.ts, src/modules/</p>
+		
+		<p><h5>app.ts - NodeJs Communication:</h5>
+		Serving the resources required for running to JavaScript based webpage displaying the network.
+		Further manages the python subprocess which does the netowork data manipulations.
+		Also acts as a relay between the JavaScript client and the python subprocess, by using sockets for client communication and 
+		stdin writing, stdout reading for python communication.</p>
+	</div>
+	
+	<h3>Python:</h3>
+	<div class="intended">
+		
+		<p>src/python/*</p>
+		
+		<p><h5>pythoncommunicator.py - Data manipulation:</h5>
+		Acts as entry point from nodeJs to the python data processing. Manages and handles the python component and defines data processing reactions to client
+		messages.
+		</p>
+	
+	
+	<p><h5>networkoptimizer.py - Network optimization (via gradient descent)</h5>
+		Performs a custom implementation of gradient descent on the network to match some fisheye distortion properties
+		while, following other layout constraints aimed to improve the view structure of the network . Done by the following process:<br><br>
+		
+		1. Move last node positions by gradient * velocity value<br>
+
+		2. Calculate node loss at the new positions<br>
+
+		3. Update Velocity and gradient direction based on if loss increased or decreased<br>
+
+		4. Set last positions to updated positions<br>
+
+		5. Repeat until optimized<br>
+	</p>
+	</div>
+</p>
+
+<p class="caption"><span class="caption-text">Python Documentation:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="autoapi/index.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/conf/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">conf</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="autoapi/python/index.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">python</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Markus Peitl
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

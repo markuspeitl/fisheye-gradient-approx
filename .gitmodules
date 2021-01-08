@@ -1,0 +1,3 @@
+[submodule "fisheye-visualization"]
+	path = fisheye-visualization
+	url = https://github.com/MarkusPeitl/fisheye-visualization

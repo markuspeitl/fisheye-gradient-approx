@@ -1,0 +1,64 @@
+:mod:`conf`
+===========
+
+.. py:module:: conf
+
+
+Module Contents
+---------------
+
+.. data:: project
+   :annotation: = Structural fish eye approximation
+
+   
+
+.. data:: copyright
+   :annotation: = 2020, Markus Peitl
+
+   
+
+.. data:: author
+   :annotation: = Markus Peitl
+
+   
+
+.. data:: release
+   :annotation: = 1.0
+
+   
+
+.. data:: extensions
+   :annotation: = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'autoapi.extension']
+
+   
+
+.. data:: autoapi_type
+   :annotation: = python
+
+   
+
+.. data:: autoapi_dirs
+   :annotation: = ['.', '../', '..', '...']
+
+   
+
+.. data:: templates_path
+   :annotation: = ['_templates']
+
+   
+
+.. data:: exclude_patterns
+   :annotation: = ['_build', 'Thumbs.db', '.DS_Store']
+
+   
+
+.. data:: html_theme
+   :annotation: = sphinx_rtd_theme
+
+   
+
+.. data:: html_static_path
+   :annotation: = ['_static']
+
+   
+

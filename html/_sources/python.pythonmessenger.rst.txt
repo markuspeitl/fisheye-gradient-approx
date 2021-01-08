@@ -1,0 +1,7 @@
+python.pythonmessenger module
+=============================
+
+.. automodule:: python.pythonmessenger
+   :members:
+   :undoc-members:
+   :show-inheritance:

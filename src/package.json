@@ -1,0 +1,41 @@
+{
+  "name": "pmmreloadedsrv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "npm run copyfiles && npm run copynodemonconf && npm-run-all -p -l startcompilewatcher runmain",
+    "startcompilewatcher": "tsc -w",
+    "runmain": "nodemon dist/app.js --ignore projects/*",
+    "copynodemonconf": "copyfiles nodemon.json dist/",
+    "copyfiles": "copyfiles -u 1 src/public/*/* dist -a && copyfiles -u 1 src/python/* dist -a",
+    "pretest": "copyfiles -u 1 src/public/*/* dist -a && tsc",
+    "test": "mocha dist/test/**/*.js",
+    "watch": "mocha-typescript-watch",
+    "prepare": "tsc"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.0",
+    "@types/express": "^4.17.1",
+    "@types/express-handlebars": "0.0.33",
+    "@types/mocha": "^5.2.7",
+    "@types/socket.io": "^2.1.2",
+    "chai": "^4.2.0",
+    "copyfiles": "^2.1.1",
+    "mocha": "^6.2.0",
+    "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
+    "source-map-support": "^0.5.13",
+    "tslint": "^5.19.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-handlebars": "^3.0.2",
+    "request": "^2.88.0",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+  }
+}

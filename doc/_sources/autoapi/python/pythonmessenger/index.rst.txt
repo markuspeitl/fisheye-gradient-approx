@@ -1,0 +1,50 @@
+:mod:`python.pythonmessenger`
+=============================
+
+.. py:module:: python.pythonmessenger
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   python.pythonmessenger.PythonMessenger
+
+
+
+.. py:class:: PythonMessenger(stdout, stdin)
+
+   Writing messages to stdout and reading messages from stdin and executing registered callbacks based on those messages
+
+   .. method:: sendMessage(self, message)
+
+
+      Write message to subject stdout
+
+      :param message: (str) message to be written
+
+
+   .. method:: registerMessageHandler(self, keyword, callback)
+
+
+      Register callback method in internal dict for use from input reader
+
+      :param callback: (data)=>None with parameter containing data from stdin (spaces not allowed) 
+
+
+   .. method:: startInputReading(self)
+
+
+      Start loop which continuously reads new available bytes from stdin, and calls callback based on
+      first message part (callback name) with message payload
+
+
+   .. method:: stop(self)
+
+
+
+

@@ -1,0 +1,7 @@
+python.networkgenerator module
+==============================
+
+.. automodule:: python.networkgenerator
+   :members:
+   :undoc-members:
+   :show-inheritance:

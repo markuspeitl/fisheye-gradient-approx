@@ -1,0 +1,7 @@
+python.networkoptimizer module
+==============================
+
+.. automodule:: python.networkoptimizer
+   :members:
+   :undoc-members:
+   :show-inheritance:
